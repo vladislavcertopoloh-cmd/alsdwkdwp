@@ -1,4 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Управление боковым меню ---
+    const menuButton = document.querySelector('.menu-button');
+    const sideMenu = document.querySelector('.side-menu');
+    
+    if (menuButton && sideMenu) {
+        menuButton.addEventListener('click', () => {
+            sideMenu.classList.toggle('active');
+        });
+    }
+
     // --- Управление модальными окнами ---
     const modals = document.querySelectorAll('.modal');
     const closeButtons = document.querySelectorAll('.close-button');
@@ -13,6 +23,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     window.addEventListener('click', (e) => {
+        if (e.target === sideMenu || (sideMenu && sideMenu.contains(e.target))) {
+            return;
+        }
+
         modals.forEach(modal => {
             if (e.target === modal) {
                 modal.style.display = 'none';
