@@ -175,8 +175,8 @@ document.addEventListener('DOMContentLoaded', () => {
     canvas.height = chartHeight;
 
     // Инициализация баланса
-    let balance = localStorage.getItem('tradingBalance') || 1000;
-    balanceDisplay.textContent = balance;
+    let balance = parseFloat(localStorage.getItem('tradingBalance')) || 1000;
+    balanceDisplay.textContent = balance.toFixed(2);
 
     // Функция для рисования графика
     function drawChart() {
@@ -234,22 +234,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Функция для проверки результата ставки
-    function checkBetResult(startPrice, endPrice, direction) {
-        if (direction === 'up' && endPrice > startPrice) {
-            return 'win';
-        } else if (direction === 'down' && endPrice < startPrice) {
-            return 'win';
+    function checkBetResult(startPrice, endPrice, direction, betAmount) {
+        let winAmount = 0;
+        let result = 'lose';
+        let multiplier = 0;
+
+        // Вычисляем процент изменения цены
+        const priceChange = endPrice - startPrice;
+        const percentageChange = priceChange / startPrice;
+
+        if (direction === 'up' && percentageChange > 0) {
+            // Условие выигрыша: цена выросла
+            result = 'win';
+            // Вычисляем множитель. 1.05 - это 105% от ставки, то есть 5% выигрыша
+            multiplier = 1 + percentageChange;
+            winAmount = betAmount * multiplier;
+        } else if (direction === 'down' && percentageChange < 0) {
+            // Условие выигрыша: цена упала
+            result = 'win';
+            // Множитель: 1.05 + 5% выигрыша
+            multiplier = 1 + Math.abs(percentageChange);
+            winAmount = betAmount * multiplier;
         } else {
-            return 'lose';
+            // Условие проигрыша
+            result = 'lose';
         }
+
+        return { result, winAmount, multiplier };
     }
 
     // Обработчики кнопок ставок
     betUpBtn.addEventListener('click', () => {
         if (betActive) return;
-        const betAmount = parseInt(betAmountInput.value);
-        if (balance < betAmount || betAmount <= 0) {
-            betResultDisplay.textContent = 'Недостаточно средств!';
+        const betAmount = parseFloat(betAmountInput.value);
+        if (balance < betAmount || betAmount <= 0 || isNaN(betAmount)) {
+            betResultDisplay.textContent = 'Недостаточно средств или неверная сумма!';
             betResultDisplay.className = 'bet-result-message lose';
             return;
         }
@@ -257,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
         betActive = true;
         betDirection = 'up';
         balance -= betAmount;
-        balanceDisplay.textContent = balance;
+        balanceDisplay.textContent = balance.toFixed(2);
         betResultDisplay.textContent = 'Ставка сделана на "ВВЕРХ"! Ждём результата...';
         betResultDisplay.className = 'bet-result-message';
 
@@ -265,26 +284,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
             const endPrice = price;
-            const result = checkBetResult(startPrice, endPrice, betDirection);
+            const { result, winAmount, multiplier } = checkBetResult(startPrice, endPrice, betDirection, betAmount);
             if (result === 'win') {
-                balance += betAmount * 2;
-                betResultDisplay.textContent = 'Вы выиграли! Баланс обновлён.';
+                balance += winAmount;
+                betResultDisplay.textContent = `Выигрыш! x${multiplier.toFixed(2)} | +${(winAmount - betAmount).toFixed(2)}$`;
                 betResultDisplay.className = 'bet-result-message win';
             } else {
-                betResultDisplay.textContent = 'Вы проиграли. Попробуйте снова.';
+                betResultDisplay.textContent = 'Проигрыш. Попробуйте снова.';
                 betResultDisplay.className = 'bet-result-message lose';
             }
-            balanceDisplay.textContent = balance;
-            localStorage.setItem('tradingBalance', balance);
+            balanceDisplay.textContent = balance.toFixed(2);
+            localStorage.setItem('tradingBalance', balance.toFixed(2));
             betActive = false;
         }, 5000); // Результат через 5 секунд
     });
 
     betDownBtn.addEventListener('click', () => {
         if (betActive) return;
-        const betAmount = parseInt(betAmountInput.value);
-        if (balance < betAmount || betAmount <= 0) {
-            betResultDisplay.textContent = 'Недостаточно средств!';
+        const betAmount = parseFloat(betAmountInput.value);
+        if (balance < betAmount || betAmount <= 0 || isNaN(betAmount)) {
+            betResultDisplay.textContent = 'Недостаточно средств или неверная сумма!';
             betResultDisplay.className = 'bet-result-message lose';
             return;
         }
@@ -292,7 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
         betActive = true;
         betDirection = 'down';
         balance -= betAmount;
-        balanceDisplay.textContent = balance;
+        balanceDisplay.textContent = balance.toFixed(2);
         betResultDisplay.textContent = 'Ставка сделана на "ВНИЗ"! Ждём результата...';
         betResultDisplay.className = 'bet-result-message';
 
@@ -300,17 +319,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
             const endPrice = price;
-            const result = checkBetResult(startPrice, endPrice, betDirection);
+            const { result, winAmount, multiplier } = checkBetResult(startPrice, endPrice, betDirection, betAmount);
             if (result === 'win') {
-                balance += betAmount * 2;
-                betResultDisplay.textContent = 'Вы выиграли! Баланс обновлён.';
+                balance += winAmount;
+                betResultDisplay.textContent = `Выигрыш! x${multiplier.toFixed(2)} | +${(winAmount - betAmount).toFixed(2)}$`;
                 betResultDisplay.className = 'bet-result-message win';
             } else {
-                betResultDisplay.textContent = 'Вы проиграли. Попробуйте снова.';
+                betResultDisplay.textContent = 'Проигрыш. Попробуйте снова.';
                 betResultDisplay.className = 'bet-result-message lose';
             }
-            balanceDisplay.textContent = balance;
-            localStorage.setItem('tradingBalance', balance);
+            balanceDisplay.textContent = balance.toFixed(2);
+            localStorage.setItem('tradingBalance', balance.toFixed(2));
             betActive = false;
         }, 5000); // Результат через 5 секунд
     });
