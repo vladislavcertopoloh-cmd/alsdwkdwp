@@ -493,9 +493,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 5000); // Результат через 5 секунд
     });
 
+    // Запускаем отрисовку новостей
+    renderNews();
+    
     // Запускаем основной игровой цикл
     gameLoop();
-    renderNews();
     
     // Запускаем симуляцию посуточной цены
     updateDailyPrice();
