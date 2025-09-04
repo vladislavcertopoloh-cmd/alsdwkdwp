@@ -171,7 +171,7 @@ body {
 }
 .auth-form input, .auth-form button {
     margin: 5px 0;
-}/* Модальное окно */
+/* Модальное окно */
 .modal {
     position: fixed;
     z-index: 100;
@@ -216,4 +216,3 @@ body {
     cursor: pointer;
     margin: 5px;
 }
-
