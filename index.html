@@ -52,7 +52,7 @@
             <ul>
                 <li><a href="#" id="settings-link">Настройки</a></li>
                 <li><a href="#">Публикация новостей</a></li>
-                <li><a href="#">Техподдержка</a></li>
+                <li><a href="#" id="support-link">Техподдержка</a></li>
                 <li><a href="#">Выход</a></li>
             </ul>
         </nav>
@@ -67,6 +67,23 @@
                 <button class="lang-button">Русский</button>
                 <button class="lang-button">English</button>
                 <button class="lang-button">Polski</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="support-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-button" id="close-support-modal">&times;</span>
+            <h2>Техподдержка</h2>
+            <div id="support-form-container">
+                <p>Опишите вашу проблему, и мы свяжемся с вами.</p>
+                <form id="support-form" class="support-form">
+                    <textarea id="support-message" rows="5" placeholder="Ваше сообщение..." required></textarea>
+                    <button type="submit" class="auth-button">Отправить</button>
+                </form>
+            </div>
+            <div id="support-message-sent" style="display: none;">
+                <p>Ваше письмо отправлено, ждите обработки вашего запроса.</p>
             </div>
         </div>
     </div>
