@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-translate="title">Нью-Йоркская Хроника</title>
+    <title>Нью-Йоркская Хроника</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -18,28 +18,28 @@
                 </button>
             </div>
             <div class="search-container">
-                <input type="text" data-translate-placeholder="search" placeholder="Поиск..." class="search-input">
+                <input type="text" placeholder="Поиск..." class="search-input">
             </div>
             <div class="auth-container">
                 <div id="auth-buttons">
-                    <button id="show-register-form-btn" class="auth-button" data-translate="register">Регистрация</button>
-                    <button id="show-login-form-btn" class="auth-button" data-translate="login">Войти</button>
+                    <button id="show-register-form-btn" class="auth-button">Регистрация</button>
+                    <button id="show-login-form-btn" class="auth-button">Войти</button>
                 </div>
                 <div id="auth-forms" style="display: none;">
                     <form id="register-form" class="auth-form">
                         <input type="text" id="reg-username" placeholder="Имя пользователя" required>
                         <input type="password" id="reg-password" placeholder="Пароль" required>
-                        <button type="submit" data-translate="register_button">Зарегистрироваться</button>
+                        <button type="submit">Зарегистрироваться</button>
                     </form>
                     <form id="login-form" class="auth-form" style="display: none;">
                         <input type="text" id="login-username" placeholder="Имя пользователя" required>
                         <input type="password" id="login-password" placeholder="Пароль" required>
-                        <button type="submit" data-translate="login_button">Войти</button>
+                        <button type="submit">Войти</button>
                     </form>
                 </div>
                 <div id="user-info" style="display: none;">
-                    <span data-translate="welcome">Добро пожаловать, <strong id="current-user"></strong>!</span>
-                    <button id="logout-btn" class="auth-button" data-translate="logout">Выход</button>
+                    <span>Добро пожаловать, <strong id="current-user"></strong>!</span>
+                    <button id="logout-btn" class="auth-button">Выход</button>
                 </div>
             </div>
         </div>
@@ -50,10 +50,10 @@
 
         <nav class="side-menu" id="side-menu">
             <ul>
-                <li><a href="#" id="settings-link" data-translate="settings">Настройки</a></li>
-                <li><a href="#" data-translate="publish_news">Публикация новостей</a></li>
-                <li><a href="#" data-translate="support">Техподдержка</a></li>
-                <li><a href="#" data-translate="logout">Выход</a></li>
+                <li><a href="#" id="settings-link">Настройки</a></li>
+                <li><a href="#">Публикация новостей</a></li>
+                <li><a href="#">Техподдержка</a></li>
+                <li><a href="#">Выход</a></li>
             </ul>
         </nav>
     </header>
@@ -61,25 +61,25 @@
     <div id="settings-modal" class="modal" style="display: none;">
         <div class="modal-content">
             <span class="close-button">&times;</span>
-            <h2 data-translate="settings">Настройки</h2>
-            <h3 data-translate="language_title">Смена языка</h3>
+            <h2>Настройки</h2>
+            <h3>Смена языка</h3>
             <div class="language-buttons">
-                <button class="lang-button" data-lang="ru">Русский</button>
-                <button class="lang-button" data-lang="en">English</button>
-                <button class="lang-button" data-lang="pl">Polski</button>
+                <button class="lang-button">Русский</button>
+                <button class="lang-button">English</button>
+                <button class="lang-button">Polski</button>
             </div>
         </div>
     </div>
     
     <main class="main-content">
         <article class="news-article">
-            <h2 data-translate="article_title">Заголовок новости</h2>
-            <p class="article-meta" data-translate="article_meta">Опубликовано 31 августа, 2025</p>
+            <h2>Заголовок новости</h2>
+            <p class="article-meta">Опубликовано 31 августа, 2025</p>
             <div class="article-image-container">
                 <img src="images/placeholder.jpg" alt="Изображение к новости">
             </div>
-            <p data-translate="article_text_1">Это пример текста новости. Он будет выглядеть как газетная статья. Вы можете добавлять сюда свой текст. Он будет монохромным и иметь газетный шрифт.</p>
-            <p data-translate="article_text_2">Второй параграф для примера. Здесь вы можете продолжать историю или добавлять больше деталей. Газетные статьи часто используют несколько коротких параграфов.</p>
+            <p>Это пример текста новости. Он будет выглядеть как газетная статья. Вы можете добавлять сюда свой текст. Он будет монохромным и иметь газетный шрифт.</p>
+            <p>Второй параграф для примера. Здесь вы можете продолжать историю или добавлять больше деталей. Газетные статьи часто используют несколько коротких параграфов.</p>
         </article>
     </main>
 
