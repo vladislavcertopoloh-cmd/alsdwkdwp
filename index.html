@@ -172,57 +172,18 @@
             gap: 10px;
         }
 
-        canvas {
-            background-color: #1a1a1a;
-            border: 2px solid #00ffff;
+        .trading-image {
+            width: 100%;
+            max-width: 600px;
             border-radius: 8px;
+            border: 2px solid #00ffff;
         }
 
-        .trading-controls {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            align-items: center;
-        }
-
-        .trading-controls input {
-            background-color: #2a2a2a;
-            border: 1px solid #555;
-            border-radius: 5px;
-            color: #fff;
-            padding: 8px;
-            width: 100px;
-            text-align: center;
-        }
-
-        .bet-button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
+        .balance-display {
+            font-size: 1.2rem;
             font-weight: bold;
-            color: #121212;
-            cursor: pointer;
-            transition: all 0.3s;
         }
 
-        .bet-button.up {
-            background-color: #00ff00;
-        }
-
-        .bet-button.up:hover {
-            box-shadow: 0 0 10px #00ff00;
-            transform: translateY(-2px);
-        }
-
-        .bet-button.down {
-            background-color: #ff0000;
-        }
-
-        .bet-button.down:hover {
-            box-shadow: 0 0 10px #ff0000;
-            transform: translateY(-2px);
-        }
-        
         .bet-result-message {
             position: absolute;
             top: 50%;
@@ -442,14 +403,8 @@
         <main class="main-content">
             <div class="chart-container">
                 <h1>График Трейдинга</h1>
-                <canvas id="trading-chart"></canvas>
-                <div class="trading-controls">
-                    <div class="balance-display">Баланс: <span id="balance">1000.00</span>$</div>
-                    <input type="number" id="bet-amount" value="10" min="1">
-                    <button id="bet-up" class="bet-button up">Вверх</button>
-                    <button id="bet-down" class="bet-button down">Вниз</button>
-                </div>
-                <div id="bet-result" class="bet-result-message"></div>
+                <img src="https://placehold.co/600x400/1a1a1a/00ffff?text=Bitcoin+Chart" alt="Bitcoin Chart" class="trading-image">
+                <div class="balance-display">Баланс: <span id="balance">1000.00</span>$</div>
             </div>
             
             <div class="news-feed">
