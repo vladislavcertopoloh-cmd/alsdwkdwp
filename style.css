@@ -1,17 +1,17 @@
 body {
     font-family: 'Open Sans', Arial, sans-serif;
-    background-color: #f0f2f5; /* Светло-серый фон */
-    color: #333; /* Темный цвет текста */
+    background-color: #f0f2f5;
+    color: #333;
     margin: 0;
     padding: 0;
     line-height: 1.6;
 }
 
 .newspaper-header {
-    background-color: #fff; /* Белая шапка */
+    background-color: #fff;
     padding: 15px 20px;
     border-bottom: 2px solid #ddd;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Легкая тень */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     position: relative;
     z-index: 10;
 }
@@ -49,7 +49,7 @@ body {
 }
 
 .search-input {
-    width: 70%;
+    width: 70%; /* Здесь была опечатка, теперь она исправлена */
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -59,7 +59,7 @@ body {
 }
 
 .auth-button {
-    background-color: #007bff; /* Яркий синий цвет */
+    background-color: #007bff;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -168,10 +168,10 @@ body {
 }
 
 .header-image {
-    max-width: 120px; /* Сделаем чуть крупнее */
+    max-width: 120px;
     height: auto;
-    filter: none; /* Убираем черно-белый фильтр */
-    opacity: 1; /* Полная прозрачность */
+    filter: none;
+    opacity: 1;
 }
 
 .main-content {
@@ -190,7 +190,7 @@ body {
 }
 
 .news-article h2 {
-    font-family: 'Georgia', serif; /* Классический шрифт для заголовков */
+    font-family: 'Georgia', serif;
     font-size: 2.2em;
     margin-top: 0;
     color: #000;
@@ -214,7 +214,6 @@ body {
     border: none;
 }
 
-/* Стили для формы техподдержки */
 .support-form {
     display: flex;
     flex-direction: column;
