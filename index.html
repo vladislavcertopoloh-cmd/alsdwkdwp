@@ -1,421 +1,354 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Казино</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #121212;
-            color: #e0e0e0;
-        }
+document.addEventListener('DOMContentLoaded', () => {
+    // Код для бокового меню...
+    const menuToggle = document.getElementById('menu-toggle');
+    const sideMenu = document.getElementById('side-menu');
+    const publishLink = document.getElementById('publish-link');
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+    if (menuToggle) {
+        menuToggle.addEventListener('click', () => {
+            sideMenu.classList.toggle('active');
+        });
+    }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            background-color: #1f1f1f;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            margin-bottom: 20px;
-        }
+    if (publishLink) {
+        publishLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            openNewsModal();
+        });
+    }
 
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #00ffff;
-            text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
-            transition: transform 0.3s ease-in-out;
-        }
+    // Система регистрации и входа
+    const authButtons = document.getElementById('auth-buttons');
+    const authForms = document.getElementById('auth-forms');
+    const userInfo = document.getElementById('user-info');
+    const publishNewsBtn = document.getElementById('publish-news-btn');
 
-        .logo:hover {
-            transform: scale(1.05);
-        }
+    const showRegisterFormBtn = document.getElementById('show-register-form-btn');
+    const showLoginFormBtn = document = document.getElementById('show-login-form-btn');
+    const registerForm = document.getElementById('register-form');
+    const loginForm = document.getElementById('login-form');
+    const logoutBtn = document.getElementById('logout-btn');
+    const currentUser = document.getElementById('current-user');
 
-        .auth-buttons,
-        .user-info {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
+    const loggedInUser = localStorage.getItem('loggedInUser');
+    if (loggedInUser) {
+        showLoggedInState(loggedInUser);
+    }
 
-        .auth-button {
-            padding: 8px 16px;
-            background-color: #333;
-            border: 2px solid #00ffff;
-            border-radius: 20px;
-            color: #fff;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-        }
-        
-        .auth-button:hover {
-            background-color: #00ffff;
-            color: #121212;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.4);
-        }
+    if (showRegisterFormBtn) {
+        showRegisterFormBtn.addEventListener('click', () => {
+            authForms.style.display = 'block';
+            registerForm.style.display = 'flex';
+            loginForm.style.display = 'none';
+        });
+    }
 
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
-            justify-content: center;
-            align-items: center;
-        }
+    if (showLoginFormBtn) {
+        showLoginFormBtn.addEventListener('click', () => {
+            authForms.style.display = 'block';
+            loginForm.style.display = 'flex';
+            registerForm.style.display = 'none';
+        });
+    }
 
-        .modal-content {
-            background-color: #1f1f1f;
-            padding: 30px;
-            border: 2px solid #00ffff;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-            animation: fadeIn 0.5s;
-            position: relative;
+    // Функция для отображения сообщений на странице вместо alert()
+    function showMessage(message, isError = false) {
+        const messageDisplay = document.getElementById('bet-result');
+        if (messageDisplay) {
+            messageDisplay.textContent = message;
+            messageDisplay.className = `bet-result-message ${isError ? 'lose' : 'win'}`;
+            // Скрываем сообщение через 3 секунды
+            setTimeout(() => {
+                messageDisplay.textContent = '';
+                messageDisplay.className = 'bet-result-message';
+            }, 3000);
+        } else {
+            console.log(message);
         }
+    }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    if (registerForm) {
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('reg-username').value;
+            const password = document.getElementById('reg-password').value;
 
-        .close-modal {
-            color: #aaa;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .close-modal:hover,
-        .close-modal:focus {
-            color: #00ffff;
-        }
-
-        .modal-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .modal-form input,
-        .modal-form textarea {
-            padding: 10px;
-            border: 1px solid #555;
-            background-color: #2a2a2a;
-            color: #fff;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-
-        .modal-form button {
-            background-color: #00ffff;
-            color: #121212;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .modal-form button:hover {
-            opacity: 0.8;
-            transform: scale(1.02);
-        }
-
-        .main-content {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .main-content h1 {
-            font-size: 2rem;
-            text-align: center;
-            color: #00ffff;
-            text-shadow: 0 0 5px #00ffff;
-        }
-
-        .chart-container {
-            position: relative;
-            background-color: #1f1f1f;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .trading-image {
-            width: 100%;
-            max-width: 600px;
-            border-radius: 8px;
-            border: 2px solid #00ffff;
-        }
-
-        .balance-display {
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-
-        .bet-result-message {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 1.5rem;
-            font-weight: bold;
-            padding: 10px 20px;
-            border-radius: 10px;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-        }
-        .bet-result-message.win {
-            background-color: rgba(0, 255, 0, 0.2);
-            color: #00ff00;
-            opacity: 1;
-        }
-        .bet-result-message.lose {
-            background-color: rgba(255, 0, 0, 0.2);
-            color: #ff0000;
-            opacity: 1;
-        }
-        
-        .news-feed {
-            background-color: #1f1f1f;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
-        }
-        
-        .news-article {
-            background-color: #2a2a2a;
-            border: 1px solid #333;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-        
-        .news-article h2 {
-            font-size: 1.5rem;
-            color: #00ffff;
-            margin-bottom: 5px;
-        }
-        
-        .article-meta {
-            font-size: 0.8rem;
-            color: #999;
-            margin-bottom: 10px;
-        }
-        
-        .article-actions {
-            margin-top: 10px;
-            display: flex;
-            gap: 10px;
-        }
-        
-        .article-actions button {
-            background-color: #444;
-            color: #fff;
-            padding: 6px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .article-actions .edit-btn:hover {
-            background-color: #00ffff;
-            color: #121212;
-        }
-        
-        .article-actions .delete-btn:hover {
-            background-color: #ff0000;
-        }
-
-        /* Sidebar styles */
-        .sidebar {
-            width: 250px;
-            height: 100%;
-            position: fixed;
-            top: 0;
-            left: -250px;
-            background-color: #1f1f1f;
-            padding: 20px;
-            transition: left 0.3s ease-in-out;
-            border-right: 2px solid #00ffff;
-            box-shadow: 2px 0 5px rgba(0, 255, 255, 0.2);
-            z-index: 999;
-        }
-        .sidebar.active {
-            left: 0;
-        }
-        .sidebar-header {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 20px;
-        }
-        .sidebar-close {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 24px;
-            cursor: pointer;
-        }
-        .sidebar-menu a {
-            display: block;
-            color: #e0e0e0;
-            padding: 10px 0;
-            text-decoration: none;
-            font-size: 1.1rem;
-            transition: color 0.3s, transform 0.3s;
-        }
-        .sidebar-menu a:hover {
-            color: #00ffff;
-            transform: translateX(5px);
-        }
-        .menu-toggle {
-            display: none;
-        }
-
-        @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                gap: 1rem;
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+            if (users[username]) {
+                showMessage('Пользователь с таким именем уже существует!', true);
+                return;
             }
-            .user-info {
-                flex-direction: column;
-                gap: 5px;
+
+            users[username] = password;
+            localStorage.setItem('users', JSON.stringify(users));
+            showMessage('Регистрация прошла успешно!');
+            showLoggedInState(username);
+        });
+    }
+
+    if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+
+            if (users[username] && users[username] === password) {
+                showMessage('Вход выполнен!');
+                showLoggedInState(username);
+            } else {
+                showMessage('Неверное имя пользователя или пароль.', true);
             }
-            .sidebar {
-                display: none;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Sidebar -->
-    <div id="side-menu" class="sidebar">
-        <div class="sidebar-menu">
-            <a href="#" id="publish-link">Публикация новостей</a>
-            <a href="#" id="settings-link">Настройки</a>
-            <a href="#" id="support-link">Техподдержка</a>
-        </div>
-    </div>
+        });
+    }
 
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <div class="logo">Anime Casino</div>
-            <div class="auth-buttons" id="auth-buttons">
-                <button class="auth-button" id="show-register-form-btn">Регистрация</button>
-                <button class="auth-button" id="show-login-form-btn">Войти</button>
-            </div>
-            <div class="user-info" id="user-info" style="display: none;">
-                <span id="current-user"></span>
-                <button class="auth-button" id="logout-btn">Выйти</button>
-                <button class="auth-button" id="publish-news-btn">Опубликовать новость</button>
-            </div>
-        </header>
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('loggedInUser');
+            showLoggedOutState();
+        });
+    }
 
-        <!-- Modals -->
-        <div id="auth-forms" class="modal">
-            <div class="modal-content">
-                <span class="close-modal">&times;</span>
-                <form id="register-form" class="modal-form" style="display: none;">
-                    <h2>Регистрация</h2>
-                    <input type="text" id="reg-username" placeholder="Имя пользователя" required>
-                    <input type="password" id="reg-password" placeholder="Пароль" required>
-                    <button type="submit">Зарегистрироваться</button>
-                </form>
-                <form id="login-form" class="modal-form" style="display: none;">
-                    <h2>Вход</h2>
-                    <input type="text" id="login-username" placeholder="Имя пользователя" required>
-                    <input type="password" id="login-password" placeholder="Пароль" required>
-                    <button type="submit">Войти</button>
-                </form>
-            </div>
-        </div>
+    function showLoggedInState(username) {
+        if (authButtons) authButtons.style.display = 'none';
+        if (authForms) authForms.style.display = 'none';
+        if (userInfo) userInfo.style.display = 'flex';
+        if (currentUser) currentUser.textContent = username;
+        localStorage.setItem('loggedInUser', username);
+        if (publishNewsBtn) publishNewsBtn.style.display = 'block';
+    }
 
-        <div id="settings-modal" class="modal">
-            <div class="modal-content">
-                <span id="close-settings-modal" class="close-modal">&times;</span>
-                <h2>Настройки</h2>
-                <p>Здесь могли бы быть настройки.</p>
-            </div>
-        </div>
+    function showLoggedOutState() {
+        if (authButtons) authButtons.style.display = 'flex';
+        if (authForms) authForms.style.display = 'none';
+        if (userInfo) userInfo.style.display = 'none';
+        if (currentUser) currentUser.textContent = '';
+        if (publishNewsBtn) publishNewsBtn.style.display = 'none';
+    }
 
-        <div id="support-modal" class="modal">
-            <div class="modal-content">
-                <span id="close-support-modal" class="close-modal">&times;</span>
-                <h2>Техподдержка</h2>
-                <div id="support-form-container">
-                    <form id="support-form" class="modal-form">
-                        <textarea id="support-message" rows="5" placeholder="Введите ваше сообщение" required></textarea>
-                        <button type="submit">Отправить</button>
-                    </form>
-                </div>
-                <div id="support-message-sent" style="display: none;">
-                    <p>Ваше сообщение отправлено!</p>
-                </div>
-            </div>
-        </div>
+    // Система настроек
+    const settingsModal = document.getElementById('settings-modal');
+    const settingsLink = document.getElementById('settings-link');
+    const closeSettingsModal = document.getElementById('close-settings-modal');
+    
+    if (settingsLink) {
+        settingsLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (settingsModal) settingsModal.style.display = 'block';
+        });
+    }
 
-        <div id="news-modal" class="modal">
-            <div class="modal-content">
-                <span id="close-news-modal" class="close-modal">&times;</span>
-                <h2 id="news-modal-title">Опубликовать новость</h2>
-                <form id="news-form" class="modal-form">
-                    <input type="hidden" id="news-id">
-                    <input type="text" id="news-title" placeholder="Заголовок" required>
-                    <textarea id="news-content" rows="10" placeholder="Текст новости" required></textarea>
-                    <button type="submit">Опубликовать</button>
-                </form>
-            </div>
-        </div>
+    if (closeSettingsModal) {
+        closeSettingsModal.addEventListener('click', () => {
+            if (settingsModal) settingsModal.style.display = 'none';
+        });
+    }
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <div class="chart-container">
-                <h1>График Трейдинга</h1>
-                <img src="https://placehold.co/600x400/1a1a1a/00ffff?text=Bitcoin+Chart" alt="Bitcoin Chart" class="trading-image">
-                <div class="balance-display">Баланс: <span id="balance">1000.00</span>$</div>
-            </div>
+    // Система техподдержки
+    const supportModal = document.getElementById('support-modal');
+    const supportLink = document.getElementById('support-link');
+    const closeSupportModal = document.getElementById('close-support-modal');
+    const supportForm = document.getElementById('support-form');
+    const supportFormContainer = document.getElementById('support-form-container');
+    const supportMessageSent = document.getElementById('support-message-sent');
+
+    if (supportLink) {
+        supportLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (supportModal) supportModal.style.display = 'block';
+            if (supportFormContainer) supportFormContainer.style.display = 'block';
+            if (supportMessageSent) supportMessageSent.style.display = 'none';
+            const supportMessage = document.getElementById('support-message');
+            if (supportMessage) supportMessage.value = '';
+        });
+    }
+    
+    if (closeSupportModal) {
+        closeSupportModal.addEventListener('click', () => {
+            if (supportModal) supportModal.style.display = 'none';
+        });
+    }
+    
+    if (supportForm) {
+        supportForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (supportFormContainer) supportFormContainer.style.display = 'none';
+            if (supportMessageSent) supportMessageSent.style.display = 'block';
             
-            <div class="news-feed">
-                <h1>Лента новостей</h1>
-                <div id="news-feed-container">
-                    <!-- News articles will be loaded here -->
-                </div>
-            </div>
-        </main>
-    </div>
+            setTimeout(() => {
+                if (supportModal) supportModal.style.display = 'none';
+            }, 3000);
+        });
+    }
 
-    <script src="script.js"></script>
-</body>
-</html>
+    // Система публикации новостей
+    const newsModal = document.getElementById('news-modal');
+    const closeNewsModal = document.getElementById('close-news-modal');
+    const publishNewsForm = document.getElementById('news-form');
+    const newsTitleInput = document.getElementById('news-title');
+    const newsContentInput = document.getElementById('news-content');
+    const newsIdInput = document.getElementById('news-id');
+    const newsFeedContainer = document.getElementById('news-feed-container');
+
+    if (publishNewsBtn) {
+        publishNewsBtn.addEventListener('click', () => {
+            openNewsModal();
+        });
+    }
+
+    if (closeNewsModal) {
+        closeNewsModal.addEventListener('click', () => {
+            if (newsModal) newsModal.style.display = 'none';
+        });
+    }
+
+    function openNewsModal(article = null) {
+        if (article) {
+            if (newsTitleInput) newsTitleInput.value = article.title;
+            if (newsContentInput) newsContentInput.value = article.content;
+            if (newsIdInput) newsIdInput.value = article.id;
+            const newsModalTitle = document.getElementById('news-modal-title');
+            if (newsModalTitle) newsModalTitle.textContent = 'Редактировать новость';
+        } else {
+            if (newsTitleInput) newsTitleInput.value = '';
+            if (newsContentInput) newsContentInput.value = '';
+            if (newsIdInput) newsIdInput.value = '';
+            const newsModalTitle = document.getElementById('news-modal-title');
+            if (newsModalTitle) newsModalTitle.textContent = 'Опубликовать новость';
+        }
+        if (newsModal) newsModal.style.display = 'block';
+    }
+
+    if (publishNewsForm) {
+        publishNewsForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newsId = newsIdInput.value;
+            const title = newsTitleInput.value;
+            const content = newsContentInput.value;
+            const author = localStorage.getItem('loggedInUser') || 'Аноним';
+            const news = JSON.parse(localStorage.getItem('news')) || [];
+
+            if (newsId) {
+                // Редактирование существующей новости
+                const articleIndex = news.findIndex(item => item.id == newsId);
+                if (articleIndex !== -1) {
+                    news[articleIndex].title = title;
+                    news[articleIndex].content = content;
+                    news[articleIndex].date = new Date().toLocaleDateString('ru-RU');
+                }
+                showMessage('Новость успешно обновлена!');
+            } else {
+                // Создание новой новости
+                const newArticle = {
+                    id: Date.now(),
+                    title,
+                    content,
+                    author,
+                    date: new Date().toLocaleDateString('ru-RU')
+                };
+                news.unshift(newArticle);
+                showMessage('Новость успешно опубликована!');
+            }
+            
+            localStorage.setItem('news', JSON.stringify(news));
+            if (newsModal) newsModal.style.display = 'none';
+            renderNews();
+        });
+    }
+
+    // Единый обработчик для закрытия модальных окон при клике вне их
+    window.addEventListener('click', (e) => {
+        if (e.target == settingsModal) {
+            if (settingsModal) settingsModal.style.display = 'none';
+        }
+        if (e.target == supportModal) {
+            if (supportModal) supportModal.style.display = 'none';
+        }
+        if (e.target == newsModal) {
+            if (newsModal) newsModal.style.display = 'none';
+        }
+    });
+
+    // Функция для отрисовки новостей на странице
+    function renderNews() {
+        const news = JSON.parse(localStorage.getItem('news')) || [];
+        if (newsFeedContainer) newsFeedContainer.innerHTML = '';
+        const loggedInUser = localStorage.getItem('loggedInUser');
+        
+        if (news.length === 0) {
+            if (newsFeedContainer) newsFeedContainer.innerHTML = `<p style="text-align: center; color: #999;">Новостей пока нет. Будьте первым, кто опубликует!</p>`;
+        }
+
+        news.forEach(article => {
+            const articleElement = document.createElement('article');
+            articleElement.className = 'news-article news-article-dynamic';
+            articleElement.innerHTML = `
+                <h2>${article.title}</h2>
+                <p class="article-meta">Опубликовано: ${article.date} | Автор: ${article.author}</p>
+                <p>${article.content.replace(/\n/g, '<br>')}</p>
+                ${loggedInUser === article.author ? `
+                <div class="article-actions">
+                    <button class="edit-btn" data-id="${article.id}">Редактировать</button>
+                    <button class="delete-btn" data-id="${article.id}">Удалить</button>
+                </div>
+                ` : ''}
+            `;
+            if (newsFeedContainer) newsFeedContainer.appendChild(articleElement);
+        });
+
+        // Добавляем обработчики для кнопок
+        document.querySelectorAll('.edit-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const id = e.target.dataset.id;
+                const newsToEdit = news.find(item => item.id == id);
+                if (newsToEdit) {
+                    openNewsModal(newsToEdit);
+                }
+            });
+        });
+
+        // Новая логика для подтверждения удаления
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const id = e.target.dataset.id;
+                const articleElement = e.target.closest('.news-article-dynamic');
+                
+                // Встраиваем подтверждение прямо в статью
+                const confirmationDiv = document.createElement('div');
+                confirmationDiv.className = 'delete-confirm';
+                confirmationDiv.style.cssText = 'margin-top: 15px; border-top: 1px solid #444; padding-top: 10px;';
+                confirmationDiv.innerHTML = `
+                    <p style="margin: 0; display: inline-block;">Вы уверены, что хотите удалить эту новость?</p>
+                    <button class="auth-button" style="background-color: #F44336; margin-left: 10px;" data-confirm-id="${id}">Да</button>
+                    <button class="auth-button" style="background-color: #ffcc00;">Нет</button>
+                `;
+                if (articleElement) articleElement.appendChild(confirmationDiv);
+
+                // Добавляем обработчики для кнопок подтверждения
+                const confirmButton = confirmationDiv.querySelector('button[data-confirm-id]');
+                if (confirmButton) {
+                    confirmButton.addEventListener('click', () => {
+                        deleteNews(id);
+                    });
+                }
+                const cancelButton = confirmationDiv.querySelector('button:not([data-confirm-id])');
+                if (cancelButton) {
+                    cancelButton.addEventListener('click', () => {
+                        confirmationDiv.remove();
+                    });
+                }
+            });
+        });
+    }
+
+    function deleteNews(id) {
+        let news = JSON.parse(localStorage.getItem('news')) || [];
+        news = news.filter(item => item.id != id);
+        localStorage.setItem('news', JSON.stringify(news));
+        renderNews();
+        showMessage('Новость удалена!', true);
+    }
+    
+    // Запускаем отрисовку новостей
+    renderNews();
+});
