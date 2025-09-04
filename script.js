@@ -36,6 +36,18 @@ document.addEventListener('DOMContentLoaded', () => {
         registerForm.style.display = 'none';
     });
 
+    // Функция для отображения сообщений на странице вместо alert()
+    function showMessage(message, isError = false) {
+        const messageDisplay = document.getElementById('bet-result');
+        messageDisplay.textContent = message;
+        messageDisplay.className = `bet-result-message ${isError ? 'lose' : 'win'}`;
+        // Скрываем сообщение через 3 секунды
+        setTimeout(() => {
+            messageDisplay.textContent = '';
+            messageDisplay.className = 'bet-result-message';
+        }, 3000);
+    }
+
     registerForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const username = document.getElementById('reg-username').value;
@@ -43,13 +55,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const users = JSON.parse(localStorage.getItem('users')) || {};
         if (users[username]) {
-            alert('Пользователь с таким именем уже существует!');
+            showMessage('Пользователь с таким именем уже существует!', true);
             return;
         }
 
         users[username] = password;
         localStorage.setItem('users', JSON.stringify(users));
-        alert('Регистрация прошла успешно!');
+        showMessage('Регистрация прошла успешно!');
         showLoggedInState(username);
     });
 
@@ -60,10 +72,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const users = JSON.parse(localStorage.getItem('users')) || {};
 
         if (users[username] && users[username] === password) {
-            alert('Вход выполнен!');
+            showMessage('Вход выполнен!');
             showLoggedInState(username);
         } else {
-            alert('Неверное имя пользователя или пароль.');
+            showMessage('Неверное имя пользователя или пароль.', true);
         }
     });
 
@@ -246,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
         betDirection = 'up';
         balance -= betAmount;
         balanceDisplay.textContent = balance;
-        betResultDisplay.textContent = 'Ставка сделана на "ВВЕРХ"!';
+        betResultDisplay.textContent = 'Ставка сделана на "ВВЕРХ"! Ждём результата...';
         betResultDisplay.className = 'bet-result-message';
 
         const startPrice = price;
@@ -281,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
         betDirection = 'down';
         balance -= betAmount;
         balanceDisplay.textContent = balance;
-        betResultDisplay.textContent = 'Ставка сделана на "ВНИЗ"!';
+        betResultDisplay.textContent = 'Ставка сделана на "ВНИЗ"! Ждём результата...';
         betResultDisplay.className = 'bet-result-message';
 
         const startPrice = price;
