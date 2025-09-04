@@ -90,20 +90,54 @@ document.addEventListener('DOMContentLoaded', () => {
     // Система настроек
     const settingsModal = document.getElementById('settings-modal');
     const settingsLink = document.getElementById('settings-link');
-    const closeButton = document.querySelector('.close-button');
+    const closeSettingsModal = document.getElementById('close-settings-modal');
     
     settingsLink.addEventListener('click', (e) => {
         e.preventDefault();
         settingsModal.style.display = 'block';
     });
 
-    closeButton.addEventListener('click', () => {
+    closeSettingsModal.addEventListener('click', () => {
         settingsModal.style.display = 'none';
     });
 
+    // Система техподдержки
+    const supportModal = document.getElementById('support-modal');
+    const supportLink = document.getElementById('support-link');
+    const closeSupportModal = document.getElementById('close-support-modal');
+    const supportForm = document.getElementById('support-form');
+    const supportFormContainer = document.getElementById('support-form-container');
+    const supportMessageSent = document.getElementById('support-message-sent');
+
+    supportLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        supportModal.style.display = 'block';
+        supportFormContainer.style.display = 'block';
+        supportMessageSent.style.display = 'none';
+        document.getElementById('support-message').value = '';
+    });
+    
+    closeSupportModal.addEventListener('click', () => {
+        supportModal.style.display = 'none';
+    });
+    
+    supportForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        supportFormContainer.style.display = 'none';
+        supportMessageSent.style.display = 'block';
+        
+        setTimeout(() => {
+            supportModal.style.display = 'none';
+        }, 3000);
+    });
+
+    // Единый обработчик для закрытия модальных окон при клике вне их
     window.addEventListener('click', (e) => {
         if (e.target == settingsModal) {
             settingsModal.style.display = 'none';
+        }
+        if (e.target == supportModal) {
+            supportModal.style.display = 'none';
         }
     });
 });
