@@ -9,18 +9,19 @@
     <style>
         body {
             font-family: 'Open Sans', Arial, sans-serif;
-            background-color: #f0f2f5;
-            color: #333;
+            background-color: #1a1a1a;
+            color: #f0f0f0;
             margin: 0;
             padding: 0;
             line-height: 1.6;
+            transition: background-color 0.5s ease;
         }
 
-        .newspaper-header {
-            background-color: #fff;
+        .casino-header {
+            background-color: #111;
             padding: 15px 20px;
-            border-bottom: 2px solid #ddd;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-bottom: 2px solid #5a451e;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
             position: relative;
             z-index: 10;
         }
@@ -54,33 +55,39 @@
         .bar {
             width: 100%;
             height: 3px;
-            background-color: #333;
+            background-color: #f0c040;
+            border-radius: 2px;
+            transition: background-color 0.3s;
+        }
+        .bar:hover {
+            background-color: #fce883;
         }
 
         .search-input {
             width: 70%;
             padding: 8px;
-            border: 1px solid #ccc;
+            border: 1px solid #5a451e;
             border-radius: 4px;
             font-family: 'Open Sans', sans-serif;
-            background-color: #fff;
-            color: #333;
+            background-color: #333;
+            color: #f0f0f0;
         }
 
         .auth-button {
-            background-color: #007bff;
-            color: #fff;
+            background-color: #f0c040;
+            color: #1a1a1a;
             border: none;
             border-radius: 4px;
             padding: 10px 15px;
             cursor: pointer;
             font-family: 'Open Sans', sans-serif;
             margin-left: 5px;
-            transition: background-color 0.2s;
+            transition: background-color 0.2s, color 0.2s, transform 0.2s;
         }
 
         .auth-button:hover {
-            background-color: #0056b3;
+            background-color: #fce883;
+            transform: translateY(-2px);
         }
 
         .side-menu {
@@ -89,12 +96,12 @@
             left: -250px;
             width: 250px;
             height: calc(100% - 60px);
-            background-color: #fff;
+            background-color: #222;
             padding-top: 20px;
             transition: left 0.3s ease-in-out;
-            border-right: 1px solid #ccc;
+            border-right: 1px solid #5a451e;
             z-index: 5;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            box-shadow: 2px 0 5px rgba(0,0,0,0.3);
         }
 
         .side-menu.active {
@@ -110,15 +117,15 @@
             display: block;
             padding: 15px 20px;
             text-decoration: none;
-            color: #333;
-            transition: background-color 0.2s;
+            color: #f0f0f0;
+            transition: background-color 0.2s, color 0.2s;
         }
 
         .side-menu li a:hover {
-            background-color: #f0f0f0;
+            background-color: #333;
+            color: #f0c040;
         }
 
-        /* Модальное окно */
         .modal {
             display: none;
             position: fixed;
@@ -128,36 +135,35 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0,0,0,0.6);
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
             justify-content: center;
             align-items: center;
         }
-        
-        .modal.active {
-            display: flex;
-        }
 
         .modal-content {
-            background-color: #fff;
+            background-color: #222;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
             width: 80%;
             max-width: 500px;
             text-align: center;
-            color: #333;
+            color: #f0f0f0;
+            border: 1px solid #5a451e;
         }
 
         .close-button {
-            color: #aaa;
+            color: #f0c040;
             float: right;
             font-size: 28px;
             font-weight: bold;
+            transition: color 0.2s;
         }
 
         .close-button:hover,
         .close-button:focus {
-            color: #333;
+            color: #fff;
             text-decoration: none;
             cursor: pointer;
         }
@@ -171,53 +177,46 @@
         .modal-form input,
         .modal-form textarea {
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #5a451e;
             border-radius: 4px;
             font-family: 'Open Sans', sans-serif;
-            background-color: #fff;
-            color: #333;
+            background-color: #333;
+            color: #f0f0f0;
         }
 
         .modal-form button {
-            background-color: #007bff;
-            color: #fff;
+            background-color: #f0c040;
+            color: #1a1a1a;
             border: none;
             border-radius: 4px;
             padding: 10px 15px;
             cursor: pointer;
             font-family: 'Open Sans', sans-serif;
-            transition: background-color 0.2s;
+            transition: background-color 0.2s, transform 0.2s;
         }
 
         .modal-form button:hover {
-            background-color: #0056b3;
-        }
-
-        .language-buttons .lang-button {
-            background-color: #e9ecef;
-            color: #333;
-            padding: 10px 20px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            cursor: pointer;
-            margin: 5px;
-            transition: background-color 0.2s;
-        }
-        .language-buttons .lang-button:hover {
-            background-color: #ddd;
+            background-color: #fce883;
+            transform: translateY(-2px);
         }
 
         .header-image-container {
             text-align: center;
             padding: 15px 0;
-            background-color: #fff;
+            background-color: #111;
         }
 
         .header-image {
             max-width: 120px;
             height: auto;
-            filter: none;
-            opacity: 1;
+            filter: drop-shadow(0 0 5px gold);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
         .main-content {
@@ -227,53 +226,52 @@
         }
 
         .news-article {
-            background-color: #fff;
+            background-color: #222;
             padding: 20px;
-            border: 1px solid #eee;
+            border: 1px solid #5a451e;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
             margin-bottom: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .news-article:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
         }
 
         .news-article h2 {
             font-family: 'Georgia', serif;
             font-size: 2.2em;
             margin-top: 0;
-            color: #000;
+            color: #f0c040;
+            text-shadow: 1px 1px 2px #000;
         }
 
         .article-meta {
             font-style: italic;
-            color: #888;
+            color: #aaa;
             font-size: 0.9em;
         }
 
-        .article-image-container {
-            margin: 15px 0;
-            text-align: center;
+        .article-actions {
+            margin-top: 15px;
         }
 
-        .article-image-container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
+        .article-actions button {
+            background-color: #f0c040;
+            color: #1a1a1a;
             border: none;
-        }
-
-        .support-form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .support-form textarea {
-            background-color: #f8f9fa;
-            border: 1px solid #ccc;
             border-radius: 4px;
-            color: #333;
-            padding: 10px;
-            font-family: 'Open Sans', sans-serif;
-            margin-bottom: 10px;
-            resize: vertical;
+            padding: 8px 12px;
+            cursor: pointer;
+            margin-right: 5px;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+
+        .article-actions button:hover {
+            background-color: #fce883;
+            transform: translateY(-2px);
         }
     </style>
 </head>
@@ -312,7 +310,7 @@
     </div>
 
     <!-- Header -->
-    <header class="newspaper-header">
+    <header class="casino-header">
         <div class="top-bar">
             <div class="menu-button-container">
                 <button class="menu-button">
@@ -337,7 +335,7 @@
             </div>
         </div>
         <div class="header-image-container">
-            <img src="https://placehold.co/120x60/f0f2f5/000000?text=NEWS" alt="Логотип Новостей" class="header-image">
+            <img src="https://placehold.co/120x60/1a1a1a/f0c040?text=GOLDEN+NEWS" alt="Логотип Новостей" class="header-image">
         </div>
     </header>
 
@@ -348,289 +346,6 @@
         </div>
     </main>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- Управление модальными окнами ---
-            const modals = document.querySelectorAll('.modal');
-            const closeButtons = document.querySelectorAll('.close-button');
-
-            closeButtons.forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const modal = e.target.closest('.modal');
-                    if (modal) {
-                        modal.style.display = 'none';
-                    }
-                });
-            });
-
-            window.addEventListener('click', (e) => {
-                modals.forEach(modal => {
-                    if (e.target === modal) {
-                        modal.style.display = 'none';
-                    }
-                });
-            });
-            
-            // --- Система регистрации и входа ---
-            const authForms = document.getElementById('auth-forms');
-            const showRegisterFormBtn = document.getElementById('show-register-form-btn');
-            const showLoginFormBtn = document.getElementById('show-login-form-btn');
-            const registerForm = document.getElementById('register-form');
-            const loginForm = document.getElementById('login-form');
-            const authButtons = document.getElementById('auth-buttons');
-            const userInfo = document.getElementById('user-info');
-            const logoutBtn = document.getElementById('logout-btn');
-            const currentUser = document.getElementById('current-user');
-            const publishNewsBtn = document.getElementById('publish-news-btn');
-
-            const loggedInUser = localStorage.getItem('loggedInUser');
-            if (loggedInUser) {
-                showLoggedInState(loggedInUser);
-            }
-
-            if (showRegisterFormBtn) {
-                showRegisterFormBtn.addEventListener('click', () => {
-                    authForms.style.display = 'flex';
-                    registerForm.style.display = 'flex';
-                    loginForm.style.display = 'none';
-                });
-            }
-
-            if (showLoginFormBtn) {
-                showLoginFormBtn.addEventListener('click', () => {
-                    authForms.style.display = 'flex';
-                    loginForm.style.display = 'flex';
-                    registerForm.style.display = 'none';
-                });
-            }
-
-            if (registerForm) {
-                registerForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const username = document.getElementById('reg-username').value;
-                    const password = document.getElementById('reg-password').value;
-                    const users = JSON.parse(localStorage.getItem('users')) || {};
-                    if (users[username]) {
-                        console.error('Пользователь с таким именем уже существует!');
-                        return;
-                    }
-                    users[username] = password;
-                    localStorage.setItem('users', JSON.stringify(users));
-                    console.log('Регистрация прошла успешно!');
-                    showLoggedInState(username);
-                });
-            }
-
-            if (loginForm) {
-                loginForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const username = document.getElementById('login-username').value;
-                    const password = document.getElementById('login-password').value;
-                    const users = JSON.parse(localStorage.getItem('users')) || {};
-                    if (users[username] && users[username] === password) {
-                        console.log('Вход выполнен!');
-                        showLoggedInState(username);
-                    } else {
-                        console.error('Неверное имя пользователя или пароль.');
-                    }
-                });
-            }
-
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', () => {
-                    localStorage.removeItem('loggedInUser');
-                    showLoggedOutState();
-                });
-            }
-
-            function showLoggedInState(username) {
-                if (authButtons) authButtons.style.display = 'none';
-                if (authForms) authForms.style.display = 'none';
-                if (userInfo) userInfo.style.display = 'flex';
-                if (currentUser) currentUser.textContent = username;
-                localStorage.setItem('loggedInUser', username);
-            }
-
-            function showLoggedOutState() {
-                if (authButtons) authButtons.style.display = 'flex';
-                if (authForms) authForms.style.display = 'none';
-                if (userInfo) userInfo.style.display = 'none';
-                if (currentUser) currentUser.textContent = '';
-                localStorage.removeItem('loggedInUser');
-                window.location.reload(); // Перезагружаем страницу для обновления состояния
-            }
-
-            // --- Система публикации новостей ---
-            const newsModal = document.getElementById('news-modal');
-            const newsForm = document.getElementById('news-form');
-            const newsTitleInput = document.getElementById('news-title');
-            const newsContentInput = document.getElementById('news-content');
-            const newsIdInput = document.getElementById('news-id');
-            const newsFeedContainer = document.getElementById('news-feed-container');
-
-            if (publishNewsBtn) {
-                publishNewsBtn.addEventListener('click', () => {
-                    openNewsModal();
-                });
-            }
-
-            function openNewsModal(article = null) {
-                if (article) {
-                    newsTitleInput.value = article.title;
-                    newsContentInput.value = article.content;
-                    newsIdInput.value = article.id;
-                    document.getElementById('news-modal-title').textContent = 'Edit Post';
-                } else {
-                    newsTitleInput.value = '';
-                    newsContentInput.value = '';
-                    newsIdInput.value = '';
-                    document.getElementById('news-modal-title').textContent = 'Create a New Post';
-                }
-                newsModal.style.display = 'flex';
-            }
-
-            if (newsForm) {
-                newsForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const newsId = newsIdInput.value;
-                    const title = newsTitleInput.value;
-                    const content = newsContentInput.value;
-                    const author = localStorage.getItem('loggedInUser') || 'Anonymous';
-                    const news = JSON.parse(localStorage.getItem('news')) || [];
-
-                    if (newsId) {
-                        const articleIndex = news.findIndex(item => item.id == newsId);
-                        if (articleIndex !== -1) {
-                            news[articleIndex].title = title;
-                            news[articleIndex].content = content;
-                            news[articleIndex].date = new Date().toLocaleDateString('en-US');
-                        }
-                    } else {
-                        const newArticle = {
-                            id: Date.now(),
-                            title,
-                            content,
-                            author,
-                            date: new Date().toLocaleDateString('en-US')
-                        };
-                        news.unshift(newArticle);
-                    }
-                    
-                    localStorage.setItem('news', JSON.stringify(news));
-                    newsModal.style.display = 'none';
-                    renderNews();
-                });
-            }
-
-            function loadInitialNews() {
-                if (!localStorage.getItem('news')) {
-                    const initialNews = [
-                        {
-                            id: 1,
-                            title: "Crypto Market Sees Volatility After Major Exchange Announcement",
-                            content: "The cryptocurrency market experienced a significant shake-up following a major announcement from a leading exchange. Bitcoin and Ethereum prices saw sharp fluctuations, while altcoins are showing mixed signals. Analysts are advising caution as market sentiment remains uncertain.",
-                            author: "Crypto Analyst",
-                            date: "09/04/2025"
-                        },
-                        {
-                            id: 2,
-                            title: "DeFi Protocol Announces Successful Security Audit",
-                            content: "A prominent decentralized finance (DeFi) protocol has successfully completed its third-party security audit, boosting investor confidence. The protocol's native token surged by 15% within hours of the announcement, signaling renewed interest in secure DeFi projects.",
-                            author: "Financial News",
-                            date: "09/03/2025"
-                        },
-                        {
-                            id: 3,
-                            title: "NFT Sales Surge as New Digital Art Collection Launches",
-                            content: "The non-fungible token (NFT) market is buzzing with excitement after a new digital art collection launched to record-breaking sales. The collection, which features unique generative art pieces, sold out in minutes, fetching millions in total revenue and attracting a wave of new collectors.",
-                            author: "Tech Reporter",
-                            date: "09/02/2025"
-                        }
-                    ];
-                    localStorage.setItem('news', JSON.stringify(initialNews));
-                }
-            }
-
-            function renderNews() {
-                const news = JSON.parse(localStorage.getItem('news')) || [];
-                if (newsFeedContainer) newsFeedContainer.innerHTML = '';
-                const loggedInUser = localStorage.getItem('loggedInUser');
-                
-                if (news.length === 0) {
-                    if (newsFeedContainer) newsFeedContainer.innerHTML = `<p style="text-align: center; color: #a0a0a0;">Новостей пока нет. Будьте первым, кто опубликует!</p>`;
-                }
-
-                news.forEach(article => {
-                    const articleElement = document.createElement('article');
-                    articleElement.className = 'news-article';
-                    articleElement.innerHTML = `
-                        <h2>${article.title}</h2>
-                        <p class="article-meta">Published: ${article.date} | Author: ${article.author}</p>
-                        <p>${article.content.replace(/\n/g, '<br>')}</p>
-                        ${loggedInUser === article.author ? `
-                        <div class="article-actions">
-                            <button class="edit-btn" data-id="${article.id}">Edit</button>
-                            <button class="delete-btn" data-id="${article.id}">Delete</button>
-                        </div>
-                        ` : ''}
-                    `;
-                    if (newsFeedContainer) newsFeedContainer.appendChild(articleElement);
-                });
-
-                document.querySelectorAll('.edit-btn').forEach(button => {
-                    button.addEventListener('click', (e) => {
-                        const id = e.target.dataset.id;
-                        const newsToEdit = news.find(item => item.id == id);
-                        if (newsToEdit) {
-                            openNewsModal(newsToEdit);
-                        }
-                    });
-                });
-
-                document.querySelectorAll('.delete-btn').forEach(button => {
-                    button.addEventListener('click', (e) => {
-                        const id = e.target.dataset.id;
-                        const articleElement = e.target.closest('.news-article');
-                        
-                        // Встраиваем подтверждение прямо в статью
-                        const confirmationDiv = document.createElement('div');
-                        confirmationDiv.className = 'delete-confirm';
-                        confirmationDiv.style.cssText = 'margin-top: 15px; border-top: 1px solid #ccc; padding-top: 10px;';
-                        confirmationDiv.innerHTML = `
-                            <p style="margin: 0; display: inline-block;">Вы уверены, что хотите удалить эту новость?</p>
-                            <button class="auth-button" style="background-color: #F44336; margin-left: 10px;" data-confirm-id="${id}">Да</button>
-                            <button class="auth-button" style="background-color: #e0e0e0; color: #333;">Нет</button>
-                        `;
-                        if (articleElement) articleElement.appendChild(confirmationDiv);
-
-                        const confirmButton = confirmationDiv.querySelector('button[data-confirm-id]');
-                        if (confirmButton) {
-                            confirmButton.addEventListener('click', () => {
-                                deleteNews(id);
-                            });
-                        }
-                        const cancelButton = confirmationDiv.querySelector('button:not([data-confirm-id])');
-                        if (cancelButton) {
-                            cancelButton.addEventListener('click', () => {
-                                confirmationDiv.remove();
-                            });
-                        }
-                    });
-                });
-            }
-
-            function deleteNews(id) {
-                let news = JSON.parse(localStorage.getItem('news')) || [];
-                news = news.filter(item => item.id != id);
-                localStorage.setItem('news', JSON.stringify(news));
-                renderNews();
-                console.log('Новость удалена!');
-            }
-            
-            // --- Запуск приложения ---
-            loadInitialNews();
-            renderNews();
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
