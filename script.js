@@ -244,21 +244,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Встраиваем подтверждение прямо в статью
                 const confirmationDiv = document.createElement('div');
                 confirmationDiv.className = 'delete-confirm';
-                confirmationDiv.style.cssText = 'margin-top: 15px; border-top: 1px solid #ccc; padding-top: 10px;';
+                confirmationDiv.style.cssText = 'margin-top: 15px; border-top: 1px solid #5a451e; padding-top: 10px;';
                 confirmationDiv.innerHTML = `
                     <p style="margin: 0; display: inline-block;">Вы уверены, что хотите удалить эту новость?</p>
-                    <button class="auth-button" style="background-color: #F44336; margin-left: 10px;" data-confirm-id="${id}">Да</button>
-                    <button class="auth-button" style="background-color: #e0e0e0; color: #333;">Нет</button>
+                    <button class="auth-button" style="background-color: #F44336; margin-left: 10px;">Да</button>
+                    <button class="auth-button" style="background-color: #444; color: #f0f0f0;">Нет</button>
                 `;
                 if (articleElement) articleElement.appendChild(confirmationDiv);
 
-                const confirmButton = confirmationDiv.querySelector('button[data-confirm-id]');
+                const confirmButton = confirmationDiv.querySelector('button:first-child');
                 if (confirmButton) {
                     confirmButton.addEventListener('click', () => {
                         deleteNews(id);
                     });
                 }
-                const cancelButton = confirmationDiv.querySelector('button:not([data-confirm-id])');
+                const cancelButton = confirmationDiv.querySelector('button:last-child');
                 if (cancelButton) {
                     cancelButton.addEventListener('click', () => {
                         confirmationDiv.remove();
