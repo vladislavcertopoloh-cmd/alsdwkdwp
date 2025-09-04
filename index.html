@@ -40,6 +40,7 @@
                 <div id="user-info" style="display: none;">
                     <span>Добро пожаловать, <strong id="current-user"></strong>!</span>
                     <button id="logout-btn" class="auth-button">Выход</button>
+                    <button id="publish-news-btn" class="auth-button">Опубликовать новость</button>
                 </div>
             </div>
         </div>
@@ -89,6 +90,20 @@
             </div>
         </div>
     </div>
+
+    <!-- Модальное окно Публикации Новости -->
+    <div id="news-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-button" id="close-news-modal">&times;</span>
+            <h2 id="news-modal-title">Публикация новости</h2>
+            <form id="news-form">
+                <input type="hidden" id="news-id">
+                <input type="text" id="news-title" placeholder="Заголовок новости" required>
+                <textarea id="news-content" rows="10" placeholder="Текст новости" required></textarea>
+                <button type="submit" class="auth-button">Опубликовать</button>
+            </form>
+        </div>
+    </div>
     
     <main class="main-content">
         <article class="news-article">
@@ -107,16 +122,11 @@
                 </div>
             </div>
         </article>
+        
+        <div id="news-feed-container">
+            <!-- Динамические новости будут загружаться сюда -->
+        </div>
 
-        <article class="news-article">
-            <h2>Заголовок новости</h2>
-            <p class="article-meta">Опубликовано 31 августа, 2025</p>
-            <div class="article-image-container">
-                <img src="images/placeholder.jpg" alt="Изображение к новости">
-            </div>
-            <p>Это пример текста новости. Он будет выглядеть как газетная статья. Вы можете добавлять сюда свой текст. Он будет монохромным и иметь газетный шрифт.</p>
-            <p>Второй параграф для примера. Здесь вы можете продолжать историю или добавлять больше деталей. Газетные статьи часто используют несколько коротких параграфов.</p>
-        </article>
     </main>
 
     <script src="script.js"></script>
