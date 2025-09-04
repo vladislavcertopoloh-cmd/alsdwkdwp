@@ -92,10 +92,10 @@
 
         .side-menu {
             position: fixed;
-            top: 60px;
+            top: 0; /* Changed from 60px to 0 */
             left: -250px;
             width: 250px;
-            height: calc(100% - 60px);
+            height: 100vh; /* Changed from calc(100% - 60px) to 100vh */
             background-color: #222;
             padding-top: 20px;
             transition: left 0.3s ease-in-out;
@@ -111,6 +111,7 @@
         .side-menu ul {
             list-style: none;
             padding: 0;
+            padding-top: 60px; /* Added padding to push links down below the header */
         }
 
         .side-menu li a {
