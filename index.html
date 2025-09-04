@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Современный Новостной Портал</title>
+    <title>Modern News Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
     <style>
@@ -281,16 +281,16 @@
         <div class="modal-content">
             <button type="button" class="close-button">&times;</button>
             <form id="register-form" class="modal-form" style="display: none;">
-                <h2 class="text-xl font-bold text-center">Регистрация</h2>
-                <input type="text" id="reg-username" placeholder="Имя пользователя" required>
-                <input type="password" id="reg-password" placeholder="Пароль" required>
-                <button type="submit">Зарегистрироваться</button>
+                <h2 class="text-xl font-bold text-center">Registration</h2>
+                <input type="text" id="reg-username" placeholder="Username" required>
+                <input type="password" id="reg-password" placeholder="Password" required>
+                <button type="submit">Register</button>
             </form>
             <form id="login-form" class="modal-form" style="display: none;">
-                <h2 class="text-xl font-bold text-center">Вход</h2>
-                <input type="text" id="login-username" placeholder="Имя пользователя" required>
-                <input type="password" id="login-password" placeholder="Пароль" required>
-                <button type="submit">Войти</button>
+                <h2 class="text-xl font-bold text-center">Log In</h2>
+                <input type="text" id="login-username" placeholder="Username" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button type="submit">Log In</button>
             </form>
         </div>
     </div>
@@ -299,12 +299,12 @@
     <div id="news-modal" class="modal">
         <div class="modal-content">
             <button type="button" class="close-button">&times;</button>
-            <h2 id="news-modal-title" class="text-xl font-bold text-center mb-4">Опубликовать новость</h2>
+            <h2 id="news-modal-title" class="text-xl font-bold text-center mb-4">Add Publication</h2>
             <form id="news-form" class="modal-form">
                 <input type="hidden" id="news-id">
-                <input type="text" id="news-title" placeholder="Заголовок" required>
-                <textarea id="news-content" rows="10" placeholder="Текст новости" required></textarea>
-                <button type="submit">Опубликовать</button>
+                <input type="text" id="news-title" placeholder="Title" required>
+                <textarea id="news-content" rows="10" placeholder="News content" required></textarea>
+                <button type="submit">Publish</button>
             </form>
         </div>
     </div>
@@ -320,34 +320,34 @@
                 </button>
             </div>
             <div class="search-container">
-                <input type="search" class="search-input" placeholder="Поиск по новостям...">
+                <input type="search" class="search-input" placeholder="Search for news...">
             </div>
             <div class="auth-container">
                 <div class="auth-buttons" id="auth-buttons">
-                    <button class="auth-button" id="show-register-form-btn">Регистрация</button>
-                    <button class="auth-button" id="show-login-form-btn">Войти</button>
+                    <button class="auth-button" id="show-register-form-btn">Register</button>
+                    <button class="auth-button" id="show-login-form-btn">Log In</button>
                 </div>
                 <div class="user-info" id="user-info" style="display: none;">
                     <span id="current-user"></span>
-                    <button class="auth-button" id="logout-btn">Выйти</button>
-                    <button class="auth-button" id="publish-news-btn">Опубликовать новость</button>
+                    <button class="auth-button" id="logout-btn">Log Out</button>
+                    <button class="auth-button" id="publish-news-btn">Add Publication</button>
                 </div>
             </div>
         </div>
         <div class="header-image-container">
-            <img src="https://placehold.co/120x60/1a1a1a/f0c040?text=GOLDEN+NEWS" alt="Логотип Новостей" class="header-image">
+            <img src="https://placehold.co/120x60/1a1a1a/f0c040?text=GOLDEN+NEWS" alt="News Logo" class="header-image">
         </div>
     </header>
 
     <!-- Side Menu -->
     <nav class="side-menu" id="side-menu">
         <ul>
-            <li><a href="#">Главная</a></li>
-            <li><a href="#">Политика</a></li>
-            <li><a href="#">Экономика</a></li>
-            <li><a href="#">Технологии</a></li>
-            <li><a href="#">Спорт</a></li>
-            <li><a href="#">Здоровье</a></li>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Politics</a></li>
+            <li><a href="#">Economy</a></li>
+            <li><a href="#">Technology</a></li>
+            <li><a href="#">Sports</a></li>
+            <li><a href="#">Health</a></li>
         </ul>
     </nav>
 
@@ -360,7 +360,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- Управление боковым меню ---
+            // --- Side Menu Control ---
             const menuButton = document.querySelector('.menu-button');
             const sideMenu = document.querySelector('.side-menu');
             
@@ -370,7 +370,7 @@
                 });
             }
 
-            // --- Управление модальными окнами ---
+            // --- Modal Window Control ---
             const modals = document.querySelectorAll('.modal');
             const closeButtons = document.querySelectorAll('.close-button');
 
@@ -395,7 +395,7 @@
                 });
             });
             
-            // --- Система регистрации и входа ---
+            // --- Registration and Login System ---
             const authForms = document.getElementById('auth-forms');
             const showRegisterFormBtn = document.getElementById('show-register-form-btn');
             const showLoginFormBtn = document.getElementById('show-login-form-btn');
@@ -435,12 +435,12 @@
                     const password = document.getElementById('reg-password').value;
                     const users = JSON.parse(localStorage.getItem('users')) || {};
                     if (users[username]) {
-                        console.error('Пользователь с таким именем уже существует!');
+                        console.error('User with this name already exists!');
                         return;
                     }
                     users[username] = password;
                     localStorage.setItem('users', JSON.stringify(users));
-                    console.log('Регистрация прошла успешно!');
+                    console.log('Registration successful!');
                     showLoggedInState(username);
                 });
             }
@@ -452,10 +452,10 @@
                     const password = document.getElementById('login-password').value;
                     const users = JSON.parse(localStorage.getItem('users')) || {};
                     if (users[username] && users[username] === password) {
-                        console.log('Вход выполнен!');
+                        console.log('Login successful!');
                         showLoggedInState(username);
                     } else {
-                        console.error('Неверное имя пользователя или пароль.');
+                        console.error('Invalid username or password.');
                     }
                 });
             }
@@ -481,10 +481,10 @@
                 if (userInfo) userInfo.style.display = 'none';
                 if (currentUser) currentUser.textContent = '';
                 localStorage.removeItem('loggedInUser');
-                window.location.reload(); // Перезагружаем страницу для обновления состояния
+                window.location.reload(); // Reload the page to update state
             }
 
-            // --- Система публикации новостей ---
+            // --- News Publication System ---
             const newsModal = document.getElementById('news-modal');
             const newsForm = document.getElementById('news-form');
             const newsTitleInput = document.getElementById('news-title');
@@ -503,12 +503,12 @@
                     newsTitleInput.value = article.title;
                     newsContentInput.value = article.content;
                     newsIdInput.value = article.id;
-                    document.getElementById('news-modal-title').textContent = 'Edit Post';
+                    document.getElementById('news-modal-title').textContent = 'Edit Publication';
                 } else {
                     newsTitleInput.value = '';
                     newsContentInput.value = '';
                     newsIdInput.value = '';
-                    document.getElementById('news-modal-title').textContent = 'Create a New Post';
+                    document.getElementById('news-modal-title').textContent = 'Add Publication';
                 }
                 newsModal.style.display = 'flex';
             }
@@ -546,42 +546,13 @@
                 });
             }
 
-            function loadInitialNews() {
-                if (!localStorage.getItem('news')) {
-                    const initialNews = [
-                        {
-                            id: 1,
-                            title: "Crypto Market Sees Volatility After Major Exchange Announcement",
-                            content: "The cryptocurrency market experienced a significant shake-up following a major announcement from a leading exchange. Bitcoin and Ethereum prices saw sharp fluctuations, while altcoins are showing mixed signals. Analysts are advising caution as market sentiment remains uncertain.",
-                            author: "Crypto Analyst",
-                            date: "09/04/2025"
-                        },
-                        {
-                            id: 2,
-                            title: "DeFi Protocol Announces Successful Security Audit",
-                            content: "A prominent decentralized finance (DeFi) protocol has successfully completed its third-party security audit, boosting investor confidence. The protocol's native token surged by 15% within hours of the announcement, signaling renewed interest in secure DeFi projects.",
-                            author: "Financial News",
-                            date: "09/03/2025"
-                        },
-                        {
-                            id: 3,
-                            title: "NFT Sales Surge as New Digital Art Collection Launches",
-                            content: "The non-fungible token (NFT) market is buzzing with excitement after a new digital art collection launched to record-breaking sales. The collection, which features unique generative art pieces, sold out in minutes, fetching millions in total revenue and attracting a wave of new collectors.",
-                            author: "Tech Reporter",
-                            date: "09/02/2025"
-                        }
-                    ];
-                    localStorage.setItem('news', JSON.stringify(initialNews));
-                }
-            }
-
             function renderNews() {
                 const news = JSON.parse(localStorage.getItem('news')) || [];
                 if (newsFeedContainer) newsFeedContainer.innerHTML = '';
                 const loggedInUser = localStorage.getItem('loggedInUser');
                 
                 if (news.length === 0) {
-                    if (newsFeedContainer) newsFeedContainer.innerHTML = `<p style="text-align: center; color: #a0a0a0;">Новостей пока нет. Будьте первым, кто опубликует!</p>`;
+                    if (newsFeedContainer) newsFeedContainer.innerHTML = `<p style="text-align: center; color: #a0a0a0;">No news posts yet. Be the first to publish!</p>`;
                 }
 
                 news.forEach(article => {
@@ -616,14 +587,14 @@
                         const id = e.target.dataset.id;
                         const articleElement = e.target.closest('.news-article');
                         
-                        // Встраиваем подтверждение прямо в статью
+                        // Embed confirmation directly in the article
                         const confirmationDiv = document.createElement('div');
                         confirmationDiv.className = 'delete-confirm';
                         confirmationDiv.style.cssText = 'margin-top: 15px; border-top: 1px solid #5a451e; padding-top: 10px;';
                         confirmationDiv.innerHTML = `
-                            <p style="margin: 0; display: inline-block;">Вы уверены, что хотите удалить эту новость?</p>
-                            <button class="auth-button" style="background-color: #F44336; margin-left: 10px;">Да</button>
-                            <button class="auth-button" style="background-color: #444; color: #f0f0f0;">Нет</button>
+                            <p style="margin: 0; display: inline-block;">Are you sure you want to delete this post?</p>
+                            <button class="auth-button" style="background-color: #F44336; margin-left: 10px;">Yes</button>
+                            <button class="auth-button" style="background-color: #444; color: #f0f0f0;">No</button>
                         `;
                         if (articleElement) articleElement.appendChild(confirmationDiv);
 
@@ -648,11 +619,10 @@
                 news = news.filter(item => item.id != id);
                 localStorage.setItem('news', JSON.stringify(news));
                 renderNews();
-                console.log('Новость удалена!');
+                console.log('News post deleted!');
             }
             
-            // --- Запуск приложения ---
-            loadInitialNews();
+            // --- Application Initialization ---
             renderNews();
         });
     </script>
