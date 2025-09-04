@@ -1,354 +1,231 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Код для бокового меню...
-    const menuToggle = document.getElementById('menu-toggle');
-    const sideMenu = document.getElementById('side-menu');
-    const publishLink = document.getElementById('publish-link');
+body {
+    font-family: 'Open Sans', Arial, sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
 
-    if (menuToggle) {
-        menuToggle.addEventListener('click', () => {
-            sideMenu.classList.toggle('active');
-        });
-    }
+.newspaper-header {
+    background-color: #fff;
+    padding: 15px 20px;
+    border-bottom: 2px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 10;
+}
 
-    if (publishLink) {
-        publishLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            openNewsModal();
-        });
-    }
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-    // Система регистрации и входа
-    const authButtons = document.getElementById('auth-buttons');
-    const authForms = document.getElementById('auth-forms');
-    const userInfo = document.getElementById('user-info');
-    const publishNewsBtn = document.getElementById('publish-news-btn');
+.menu-button-container, .auth-container {
+    flex-basis: 20%;
+}
 
-    const showRegisterFormBtn = document.getElementById('show-register-form-btn');
-    const showLoginFormBtn = document = document.getElementById('show-login-form-btn');
-    const registerForm = document.getElementById('register-form');
-    const loginForm = document.getElementById('login-form');
-    const logoutBtn = document.getElementById('logout-btn');
-    const currentUser = document.getElementById('current-user');
+.search-container {
+    flex-grow: 1;
+    text-align: center;
+}
 
-    const loggedInUser = localStorage.getItem('loggedInUser');
-    if (loggedInUser) {
-        showLoggedInState(loggedInUser);
-    }
+.menu-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 24px;
+    width: 30px;
+}
 
-    if (showRegisterFormBtn) {
-        showRegisterFormBtn.addEventListener('click', () => {
-            authForms.style.display = 'block';
-            registerForm.style.display = 'flex';
-            loginForm.style.display = 'none';
-        });
-    }
+.bar {
+    width: 100%;
+    height: 3px;
+    background-color: #333;
+}
 
-    if (showLoginFormBtn) {
-        showLoginFormBtn.addEventListener('click', () => {
-            authForms.style.display = 'block';
-            loginForm.style.display = 'flex';
-            registerForm.style.display = 'none';
-        });
-    }
+.search-input {
+    width: 70%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: 'Open Sans', sans-serif;
+    background-color: #fff;
+    color: #333;
+}
 
-    // Функция для отображения сообщений на странице вместо alert()
-    function showMessage(message, isError = false) {
-        const messageDisplay = document.getElementById('bet-result');
-        if (messageDisplay) {
-            messageDisplay.textContent = message;
-            messageDisplay.className = `bet-result-message ${isError ? 'lose' : 'win'}`;
-            // Скрываем сообщение через 3 секунды
-            setTimeout(() => {
-                messageDisplay.textContent = '';
-                messageDisplay.className = 'bet-result-message';
-            }, 3000);
-        } else {
-            console.log(message);
-        }
-    }
+.auth-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-family: 'Open Sans', sans-serif;
+    margin-left: 5px;
+    transition: background-color 0.2s;
+}
 
-    if (registerForm) {
-        registerForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const username = document.getElementById('reg-username').value;
-            const password = document.getElementById('reg-password').value;
+.auth-button:hover {
+    background-color: #0056b3;
+}
 
-            const users = JSON.parse(localStorage.getItem('users')) || {};
-            if (users[username]) {
-                showMessage('Пользователь с таким именем уже существует!', true);
-                return;
-            }
+.side-menu {
+    position: fixed;
+    top: 60px;
+    left: -250px;
+    width: 250px;
+    height: calc(100% - 60px);
+    background-color: #fff;
+    padding-top: 20px;
+    transition: left 0.3s ease-in-out;
+    border-right: 1px solid #ccc;
+    z-index: 5;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
 
-            users[username] = password;
-            localStorage.setItem('users', JSON.stringify(users));
-            showMessage('Регистрация прошла успешно!');
-            showLoggedInState(username);
-        });
-    }
+.side-menu.active {
+    left: 0;
+}
 
-    if (loginForm) {
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const username = document.getElementById('login-username').value;
-            const password = document.getElementById('login-password').value;
-            const users = JSON.parse(localStorage.getItem('users')) || {};
+.side-menu ul {
+    list-style: none;
+    padding: 0;
+}
 
-            if (users[username] && users[username] === password) {
-                showMessage('Вход выполнен!');
-                showLoggedInState(username);
-            } else {
-                showMessage('Неверное имя пользователя или пароль.', true);
-            }
-        });
-    }
+.side-menu li a {
+    display: block;
+    padding: 15px 20px;
+    text-decoration: none;
+    color: #333;
+    transition: background-color 0.2s;
+}
 
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', () => {
-            localStorage.removeItem('loggedInUser');
-            showLoggedOutState();
-        });
-    }
+.side-menu li a:hover {
+    background-color: #f0f0f0;
+}
 
-    function showLoggedInState(username) {
-        if (authButtons) authButtons.style.display = 'none';
-        if (authForms) authForms.style.display = 'none';
-        if (userInfo) userInfo.style.display = 'flex';
-        if (currentUser) currentUser.textContent = username;
-        localStorage.setItem('loggedInUser', username);
-        if (publishNewsBtn) publishNewsBtn.style.display = 'block';
-    }
+/* Модальное окно */
+.modal {
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+}
 
-    function showLoggedOutState() {
-        if (authButtons) authButtons.style.display = 'flex';
-        if (authForms) authForms.style.display = 'none';
-        if (userInfo) userInfo.style.display = 'none';
-        if (currentUser) currentUser.textContent = '';
-        if (publishNewsBtn) publishNewsBtn.style.display = 'none';
-    }
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+    color: #333;
+}
 
-    // Система настроек
-    const settingsModal = document.getElementById('settings-modal');
-    const settingsLink = document.getElementById('settings-link');
-    const closeSettingsModal = document.getElementById('close-settings-modal');
-    
-    if (settingsLink) {
-        settingsLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (settingsModal) settingsModal.style.display = 'block';
-        });
-    }
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
 
-    if (closeSettingsModal) {
-        closeSettingsModal.addEventListener('click', () => {
-            if (settingsModal) settingsModal.style.display = 'none';
-        });
-    }
+.close-button:hover,
+.close-button:focus {
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+}
 
-    // Система техподдержки
-    const supportModal = document.getElementById('support-modal');
-    const supportLink = document.getElementById('support-link');
-    const closeSupportModal = document.getElementById('close-support-modal');
-    const supportForm = document.getElementById('support-form');
-    const supportFormContainer = document.getElementById('support-form-container');
-    const supportMessageSent = document.getElementById('support-message-sent');
+.language-buttons .lang-button {
+    background-color: #e9ecef;
+    color: #333;
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 5px;
+    transition: background-color 0.2s;
+}
+.language-buttons .lang-button:hover {
+    background-color: #ddd;
+}
 
-    if (supportLink) {
-        supportLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (supportModal) supportModal.style.display = 'block';
-            if (supportFormContainer) supportFormContainer.style.display = 'block';
-            if (supportMessageSent) supportMessageSent.style.display = 'none';
-            const supportMessage = document.getElementById('support-message');
-            if (supportMessage) supportMessage.value = '';
-        });
-    }
-    
-    if (closeSupportModal) {
-        closeSupportModal.addEventListener('click', () => {
-            if (supportModal) supportModal.style.display = 'none';
-        });
-    }
-    
-    if (supportForm) {
-        supportForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            if (supportFormContainer) supportFormContainer.style.display = 'none';
-            if (supportMessageSent) supportMessageSent.style.display = 'block';
-            
-            setTimeout(() => {
-                if (supportModal) supportModal.style.display = 'none';
-            }, 3000);
-        });
-    }
+.header-image-container {
+    text-align: center;
+    padding: 15px 0;
+    background-color: #fff;
+}
 
-    // Система публикации новостей
-    const newsModal = document.getElementById('news-modal');
-    const closeNewsModal = document.getElementById('close-news-modal');
-    const publishNewsForm = document.getElementById('news-form');
-    const newsTitleInput = document.getElementById('news-title');
-    const newsContentInput = document.getElementById('news-content');
-    const newsIdInput = document.getElementById('news-id');
-    const newsFeedContainer = document.getElementById('news-feed-container');
+.header-image {
+    max-width: 120px;
+    height: auto;
+    filter: none;
+    opacity: 1;
+}
 
-    if (publishNewsBtn) {
-        publishNewsBtn.addEventListener('click', () => {
-            openNewsModal();
-        });
-    }
+.main-content {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
 
-    if (closeNewsModal) {
-        closeNewsModal.addEventListener('click', () => {
-            if (newsModal) newsModal.style.display = 'none';
-        });
-    }
+.news-article {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
 
-    function openNewsModal(article = null) {
-        if (article) {
-            if (newsTitleInput) newsTitleInput.value = article.title;
-            if (newsContentInput) newsContentInput.value = article.content;
-            if (newsIdInput) newsIdInput.value = article.id;
-            const newsModalTitle = document.getElementById('news-modal-title');
-            if (newsModalTitle) newsModalTitle.textContent = 'Редактировать новость';
-        } else {
-            if (newsTitleInput) newsTitleInput.value = '';
-            if (newsContentInput) newsContentInput.value = '';
-            if (newsIdInput) newsIdInput.value = '';
-            const newsModalTitle = document.getElementById('news-modal-title');
-            if (newsModalTitle) newsModalTitle.textContent = 'Опубликовать новость';
-        }
-        if (newsModal) newsModal.style.display = 'block';
-    }
+.news-article h2 {
+    font-family: 'Georgia', serif;
+    font-size: 2.2em;
+    margin-top: 0;
+    color: #000;
+}
 
-    if (publishNewsForm) {
-        publishNewsForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const newsId = newsIdInput.value;
-            const title = newsTitleInput.value;
-            const content = newsContentInput.value;
-            const author = localStorage.getItem('loggedInUser') || 'Аноним';
-            const news = JSON.parse(localStorage.getItem('news')) || [];
+.article-meta {
+    font-style: italic;
+    color: #888;
+    font-size: 0.9em;
+}
 
-            if (newsId) {
-                // Редактирование существующей новости
-                const articleIndex = news.findIndex(item => item.id == newsId);
-                if (articleIndex !== -1) {
-                    news[articleIndex].title = title;
-                    news[articleIndex].content = content;
-                    news[articleIndex].date = new Date().toLocaleDateString('ru-RU');
-                }
-                showMessage('Новость успешно обновлена!');
-            } else {
-                // Создание новой новости
-                const newArticle = {
-                    id: Date.now(),
-                    title,
-                    content,
-                    author,
-                    date: new Date().toLocaleDateString('ru-RU')
-                };
-                news.unshift(newArticle);
-                showMessage('Новость успешно опубликована!');
-            }
-            
-            localStorage.setItem('news', JSON.stringify(news));
-            if (newsModal) newsModal.style.display = 'none';
-            renderNews();
-        });
-    }
+.article-image-container {
+    margin: 15px 0;
+    text-align: center;
+}
 
-    // Единый обработчик для закрытия модальных окон при клике вне их
-    window.addEventListener('click', (e) => {
-        if (e.target == settingsModal) {
-            if (settingsModal) settingsModal.style.display = 'none';
-        }
-        if (e.target == supportModal) {
-            if (supportModal) supportModal.style.display = 'none';
-        }
-        if (e.target == newsModal) {
-            if (newsModal) newsModal.style.display = 'none';
-        }
-    });
+.article-image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: none;
+}
 
-    // Функция для отрисовки новостей на странице
-    function renderNews() {
-        const news = JSON.parse(localStorage.getItem('news')) || [];
-        if (newsFeedContainer) newsFeedContainer.innerHTML = '';
-        const loggedInUser = localStorage.getItem('loggedInUser');
-        
-        if (news.length === 0) {
-            if (newsFeedContainer) newsFeedContainer.innerHTML = `<p style="text-align: center; color: #999;">Новостей пока нет. Будьте первым, кто опубликует!</p>`;
-        }
+.support-form {
+    display: flex;
+    flex-direction: column;
+}
 
-        news.forEach(article => {
-            const articleElement = document.createElement('article');
-            articleElement.className = 'news-article news-article-dynamic';
-            articleElement.innerHTML = `
-                <h2>${article.title}</h2>
-                <p class="article-meta">Опубликовано: ${article.date} | Автор: ${article.author}</p>
-                <p>${article.content.replace(/\n/g, '<br>')}</p>
-                ${loggedInUser === article.author ? `
-                <div class="article-actions">
-                    <button class="edit-btn" data-id="${article.id}">Редактировать</button>
-                    <button class="delete-btn" data-id="${article.id}">Удалить</button>
-                </div>
-                ` : ''}
-            `;
-            if (newsFeedContainer) newsFeedContainer.appendChild(articleElement);
-        });
-
-        // Добавляем обработчики для кнопок
-        document.querySelectorAll('.edit-btn').forEach(button => {
-            button.addEventListener('click', (e) => {
-                const id = e.target.dataset.id;
-                const newsToEdit = news.find(item => item.id == id);
-                if (newsToEdit) {
-                    openNewsModal(newsToEdit);
-                }
-            });
-        });
-
-        // Новая логика для подтверждения удаления
-        document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', (e) => {
-                const id = e.target.dataset.id;
-                const articleElement = e.target.closest('.news-article-dynamic');
-                
-                // Встраиваем подтверждение прямо в статью
-                const confirmationDiv = document.createElement('div');
-                confirmationDiv.className = 'delete-confirm';
-                confirmationDiv.style.cssText = 'margin-top: 15px; border-top: 1px solid #444; padding-top: 10px;';
-                confirmationDiv.innerHTML = `
-                    <p style="margin: 0; display: inline-block;">Вы уверены, что хотите удалить эту новость?</p>
-                    <button class="auth-button" style="background-color: #F44336; margin-left: 10px;" data-confirm-id="${id}">Да</button>
-                    <button class="auth-button" style="background-color: #ffcc00;">Нет</button>
-                `;
-                if (articleElement) articleElement.appendChild(confirmationDiv);
-
-                // Добавляем обработчики для кнопок подтверждения
-                const confirmButton = confirmationDiv.querySelector('button[data-confirm-id]');
-                if (confirmButton) {
-                    confirmButton.addEventListener('click', () => {
-                        deleteNews(id);
-                    });
-                }
-                const cancelButton = confirmationDiv.querySelector('button:not([data-confirm-id])');
-                if (cancelButton) {
-                    cancelButton.addEventListener('click', () => {
-                        confirmationDiv.remove();
-                    });
-                }
-            });
-        });
-    }
-
-    function deleteNews(id) {
-        let news = JSON.parse(localStorage.getItem('news')) || [];
-        news = news.filter(item => item.id != id);
-        localStorage.setItem('news', JSON.stringify(news));
-        renderNews();
-        showMessage('Новость удалена!', true);
-    }
-    
-    // Запускаем отрисовку новостей
-    renderNews();
-});
+.support-form textarea {
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #333;
+    padding: 10px;
+    font-family: 'Open Sans', sans-serif;
+    margin-bottom: 10px;
+    resize: vertical;
+}
