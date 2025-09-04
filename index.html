@@ -58,6 +58,7 @@
         </nav>
     </header>
 
+    <!-- Модальное окно Настроек -->
     <div id="settings-modal" class="modal" style="display: none;">
         <div class="modal-content">
             <span class="close-button" id="close-settings-modal">&times;</span>
@@ -71,6 +72,7 @@
         </div>
     </div>
     
+    <!-- Модальное окно Техподдержки -->
     <div id="support-modal" class="modal" style="display: none;">
         <div class="modal-content">
             <span class="close-button" id="close-support-modal">&times;</span>
@@ -89,6 +91,23 @@
     </div>
     
     <main class="main-content">
+        <article class="news-article">
+            <h2>Торги на финансовых рынках</h2>
+            <p>Сделайте ставку на повышение или понижение курса и проверьте свою удачу!</p>
+            <div class="trading-container">
+                <canvas id="trading-chart"></canvas>
+                <div class="trading-controls">
+                    <div class="balance-info">Баланс: <span id="balance">1000</span>$</div>
+                    <input type="number" id="bet-amount" value="10" min="1" step="1">
+                    <div class="bet-buttons">
+                        <button id="bet-up" class="bet-button up-button">Вверх</button>
+                        <button id="bet-down" class="bet-button down-button">Вниз</button>
+                    </div>
+                    <div id="bet-result" class="bet-result-message"></div>
+                </div>
+            </div>
+        </article>
+
         <article class="news-article">
             <h2>Заголовок новости</h2>
             <p class="article-meta">Опубликовано 31 августа, 2025</p>
