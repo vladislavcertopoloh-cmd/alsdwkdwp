@@ -140,4 +140,169 @@ document.addEventListener('DOMContentLoaded', () => {
             supportModal.style.display = 'none';
         }
     });
+
+    // --- Логика графика и ставок ---
+    const canvas = document.getElementById('trading-chart');
+    const ctx = canvas.getContext('2d');
+    const betUpBtn = document.getElementById('bet-up');
+    const betDownBtn = document.getElementById('bet-down');
+    const betAmountInput = document.getElementById('bet-amount');
+    const balanceDisplay = document.getElementById('balance');
+    const betResultDisplay = document.getElementById('bet-result');
+
+    // Настройки графика
+    const chartWidth = 600;
+    const chartHeight = 300;
+    const maxDataPoints = 100;
+    let data = [];
+    let price = 100;
+    let betActive = false;
+    let betDirection = null;
+
+    canvas.width = chartWidth;
+    canvas.height = chartHeight;
+
+    // Инициализация баланса
+    let balance = localStorage.getItem('tradingBalance') || 1000;
+    balanceDisplay.textContent = balance;
+
+    // Функция для рисования графика
+    function drawChart() {
+        ctx.fillStyle = '#1a1a1a';
+        ctx.fillRect(0, 0, chartWidth, chartHeight);
+
+        // Рисуем линии сетки
+        ctx.strokeStyle = '#333';
+        ctx.beginPath();
+        for (let i = 0; i <= 10; i++) {
+            const y = chartHeight / 10 * i;
+            ctx.moveTo(0, y);
+            ctx.lineTo(chartWidth, y);
+        }
+        ctx.stroke();
+
+        // Рисуем сам график
+        ctx.beginPath();
+        ctx.strokeStyle = '#00ffff'; // Неоновый цвет
+        ctx.lineWidth = 2;
+        
+        // Добавляем тень для неонового эффекта
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#00ffff';
+
+        if (data.length > 0) {
+            ctx.moveTo(0, chartHeight - data[0]);
+            for (let i = 1; i < data.length; i++) {
+                const x = i * (chartWidth / (maxDataPoints - 1));
+                const y = chartHeight - data[i];
+                ctx.lineTo(x, y);
+            }
+        }
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+    }
+
+    // Функция для обновления данных графика
+    function updateData() {
+        // Рандомный рост или падение
+        price += (Math.random() - 0.5) * 5;
+        if (price < 0) price = 0;
+
+        data.push(price);
+        if (data.length > maxDataPoints) {
+            data.shift();
+        }
+    }
+
+    // Игровой цикл
+    function gameLoop() {
+        updateData();
+        drawChart();
+        requestAnimationFrame(gameLoop);
+    }
+    
+    // Функция для проверки результата ставки
+    function checkBetResult(startPrice, endPrice, direction) {
+        if (direction === 'up' && endPrice > startPrice) {
+            return 'win';
+        } else if (direction === 'down' && endPrice < startPrice) {
+            return 'win';
+        } else {
+            return 'lose';
+        }
+    }
+
+    // Обработчики кнопок ставок
+    betUpBtn.addEventListener('click', () => {
+        if (betActive) return;
+        const betAmount = parseInt(betAmountInput.value);
+        if (balance < betAmount || betAmount <= 0) {
+            betResultDisplay.textContent = 'Недостаточно средств!';
+            betResultDisplay.className = 'bet-result-message lose';
+            return;
+        }
+
+        betActive = true;
+        betDirection = 'up';
+        balance -= betAmount;
+        balanceDisplay.textContent = balance;
+        betResultDisplay.textContent = 'Ставка сделана на "ВВЕРХ"!';
+        betResultDisplay.className = 'bet-result-message';
+
+        const startPrice = price;
+
+        setTimeout(() => {
+            const endPrice = price;
+            const result = checkBetResult(startPrice, endPrice, betDirection);
+            if (result === 'win') {
+                balance += betAmount * 2;
+                betResultDisplay.textContent = 'Вы выиграли! Баланс обновлён.';
+                betResultDisplay.className = 'bet-result-message win';
+            } else {
+                betResultDisplay.textContent = 'Вы проиграли. Попробуйте снова.';
+                betResultDisplay.className = 'bet-result-message lose';
+            }
+            balanceDisplay.textContent = balance;
+            localStorage.setItem('tradingBalance', balance);
+            betActive = false;
+        }, 5000); // Результат через 5 секунд
+    });
+
+    betDownBtn.addEventListener('click', () => {
+        if (betActive) return;
+        const betAmount = parseInt(betAmountInput.value);
+        if (balance < betAmount || betAmount <= 0) {
+            betResultDisplay.textContent = 'Недостаточно средств!';
+            betResultDisplay.className = 'bet-result-message lose';
+            return;
+        }
+
+        betActive = true;
+        betDirection = 'down';
+        balance -= betAmount;
+        balanceDisplay.textContent = balance;
+        betResultDisplay.textContent = 'Ставка сделана на "ВНИЗ"!';
+        betResultDisplay.className = 'bet-result-message';
+
+        const startPrice = price;
+
+        setTimeout(() => {
+            const endPrice = price;
+            const result = checkBetResult(startPrice, endPrice, betDirection);
+            if (result === 'win') {
+                balance += betAmount * 2;
+                betResultDisplay.textContent = 'Вы выиграли! Баланс обновлён.';
+                betResultDisplay.className = 'bet-result-message win';
+            } else {
+                betResultDisplay.textContent = 'Вы проиграли. Попробуйте снова.';
+                betResultDisplay.className = 'bet-result-message lose';
+            }
+            balanceDisplay.textContent = balance;
+            localStorage.setItem('tradingBalance', balance);
+            betActive = false;
+        }, 5000); // Результат через 5 секунд
+    });
+
+    // Запускаем основной игровой цикл
+    gameLoop();
 });
