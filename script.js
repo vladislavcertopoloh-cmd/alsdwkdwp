@@ -368,21 +368,26 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.shadowBlur = 0;
     }
 
-    // Функция для обновления данных графика
-    function updateData() {
-        // Рандомный рост или падение
-        price += (Math.random() - 0.5) * 5;
+    // Обновляем данные графика с посуточной скоростью
+    function updateDailyPrice() {
+        // Симулируем изменение цены, подобное биткоину. Цена меняется на случайный процент
+        // от текущей цены, а не на фиксированную величину.
+        const dailyChange = (Math.random() - 0.5) * 0.1; // Изменение от -5% до +5%
+        price += price * dailyChange;
+        
         if (price < 0) price = 0;
 
         data.push(price);
         if (data.length > maxDataPoints) {
             data.shift();
         }
+        
+        // Обновляем цену каждые 2 секунды, чтобы имитировать "сутки"
+        setTimeout(updateDailyPrice, 2000);
     }
 
-    // Игровой цикл
+    // Игровой цикл для отрисовки (отделен от логики обновления данных)
     function gameLoop() {
-        updateData();
         drawChart();
         requestAnimationFrame(gameLoop);
     }
@@ -491,4 +496,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Запускаем основной игровой цикл
     gameLoop();
     renderNews();
+    
+    // Запускаем симуляцию посуточной цены
+    updateDailyPrice();
 });
