@@ -1,6 +1,6 @@
 body {
-    font-family: 'Arial', sans-serif; /* Изменили шрифт на более "стимовский" */
-    background-color: #1b2838; /* Темный фон, как в Steam */
+    font-family: 'Arial', sans-serif;
+    background-color: #1b2838;
     color: #c7d5e0;
     margin: 0;
     padding: 0;
@@ -8,7 +8,7 @@ body {
 }
 
 .newspaper-header {
-    background-color: #1a1e24; /* Темная шапка */
+    background-color: #1a1e24;
     padding: 15px 20px;
     border-bottom: 2px solid #000;
     position: relative;
@@ -52,12 +52,12 @@ body {
     padding: 8px;
     border: 1px solid #000;
     font-family: 'Arial', sans-serif;
-    background-color: #2a475e; /* Темный фон поля ввода */
+    background-color: #2a475e;
     color: #fff;
 }
 
 .auth-button {
-    background-color: #556774; /* Серый фон кнопки */
+    background-color: #556774;
     color: #fff;
     border: none;
     padding: 10px 15px;
@@ -68,7 +68,7 @@ body {
 }
 
 .auth-button:hover {
-    background-color: #66c0f4; /* Голубой эффект при наведении */
+    background-color: #66c0f4;
 }
 
 .side-menu {
@@ -77,7 +77,7 @@ body {
     left: -250px;
     width: 250px;
     height: calc(100% - 60px);
-    background-color: #1a1e24; /* Темный фон меню */
+    background-color: #1a1e24;
     padding-top: 20px;
     transition: left 0.3s ease-in-out;
     border-right: 2px solid #000;
@@ -97,12 +97,12 @@ body {
     display: block;
     padding: 15px 20px;
     text-decoration: none;
-    color: #c7d5e0; /* Светлый цвет текста */
+    color: #c7d5e0;
     transition: background-color 0.2s;
 }
 
 .side-menu li a:hover {
-    background-color: #2a475e; /* Темный фон при наведении */
+    background-color: #2a475e;
 }
 
 /* Модальное окно в стиле Steam */
@@ -114,11 +114,11 @@ body {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.8); /* Полупрозрачный черный фон */
+    background-color: rgba(0,0,0,0.8);
 }
 
 .modal-content {
-    background-color: #2a475e; /* Темно-синий фон окна */
+    background-color: #2a475e;
     margin: 15% auto;
     padding: 20px;
     border: none;
@@ -137,13 +137,13 @@ body {
 
 .close-button:hover,
 .close-button:focus {
-    color: #66c0f4; /* Голубой цвет при наведении */
+    color: #66c0f4;
     text-decoration: none;
     cursor: pointer;
 }
 
 .language-buttons .lang-button {
-    background-color: #556774; /* Серый фон кнопки */
+    background-color: #556774;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -152,7 +152,7 @@ body {
     transition: background-color 0.2s;
 }
 .language-buttons .lang-button:hover {
-    background-color: #66c0f4; /* Голубой эффект при наведении */
+    background-color: #66c0f4;
 }
 
 .header-image-container {
@@ -176,7 +176,7 @@ body {
 }
 
 .news-article {
-    background-color: #1a1e24; /* Темный фон статьи */
+    background-color: #1a1e24;
     padding: 20px;
     border: 1px solid #000;
     margin-bottom: 20px;
@@ -188,7 +188,7 @@ body {
 
 .article-meta {
     font-style: italic;
-    color: #8c959c; /* Серый цвет текста */
+    color: #8c959c;
     font-size: 0.9em;
 }
 
@@ -200,5 +200,20 @@ body {
 .article-image-container img {
     max-width: 100%;
     height: auto;
-    border: 1px solid #556774; /* Тонкая рамка */
+    border: 1px solid #556774;
+}
+
+/* Стили для формы техподдержки */
+.support-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.support-form textarea {
+    background-color: #1a1e24;
+    border: 1px solid #000;
+    color: #fff;
+    padding: 10px;
+    font-family: 'Arial', sans-serif;
+    margin-bottom: 10px;
 }
